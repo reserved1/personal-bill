@@ -370,7 +370,7 @@ func main() {
     // Lista inicial de Contas.
     var list: Array<Bill> = []
     // Constante para transformar o caminho do arquivo para URL.
-    let fileUrl = URL.init(fileURLWithPath: "/Users/mmeneses/Documents/personal-bill/personal-bill/saves")
+    let fileUrl = URL.init(fileURLWithPath: NSHomeDirectory()+"/saves")
     // Função para carregar dados dos arquivos na lista.
     loadData(&list, fileUrl)
 
