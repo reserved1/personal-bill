@@ -191,8 +191,17 @@ func alterationMenu(_ array: inout Array<Bill>) {
             print("",terminator: "-> ")
             tempBarCode = getBarCode()
         } while tempBarCode == nil || tempBarCode == ""
-        tempBill.barCode = tempBarCode!
-        
+        let tempBill = barCodeSearch(&array, tempBarCode!)
+        if tempBill.barCode != "404" { // Verificação para caso de ID repetido.
+            print(
+            """
+            -> Já existe conta com esse Código de Barra.
+            """
+            )
+            return
+        } else {
+            tempBill.barCode = tempBarCode!
+        }
     case "2":
         var tempDescription: String?
         repeat {
