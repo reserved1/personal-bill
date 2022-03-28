@@ -15,16 +15,17 @@ git clone https://github.com/reserved1/personal-bill.git
 
 ## Utilizando o Programa
 
-O programa possui um menu de entrada com 4 opções de interação:
-1 - Cadastrar Conta
-2 - Alterar Conta
-3 - Apagar Conta
-4 - Exibir Conta
+O programa possui um menu de entrada com 4 opções de interação:  
+1 - Cadastrar Conta.  
+2 - Alterar Conta.  
+3 - Apagar Conta.  
+4 - Exibir Conta.  
 
-As Opções devem ser escolhidas baseadas nos números;
+As Opções devem ser escolhidas baseadas nos números;  
 1, 2, 3 ou 4.
 
-** Ao escolher alguma opção fora as oferecidas o programa retorna ao menu de entrada.
+*OBS*.   
+** Ao escolher alguma opção fora as oferecidas o programa retorna ao menu de entrada.  
 ** Ao escolher alguma opção fora as oferecidas no menu de entrada o programa encerra.
 
 
@@ -65,7 +66,7 @@ Ao escolher exibir conta, um menu de exibição aparece, listando as opções:
 - Exibir Todas as Contas
 - Exibir Contas Não Pagas
 - Exibir Contas Pagas
-- Voltar
+- Exibir Total a Pagar
 
 ** Exibir Todas as Contas: Mostrará na tela todas as contas cadastradas no programa.
 
@@ -73,7 +74,12 @@ Ao escolher exibir conta, um menu de exibição aparece, listando as opções:
 
 ** Exibir Contas Pagas: Mostrará na tela todas as contas cadastradas no programa com o estado de Paga.
 
-** Voltar: Retornará ao menu de entrada.
+** Exibir Total a Pagar: Mostrará na tela o valor somado de todas as contas que constam como Não Paga.
+
+## Persistência de Informação
+
+Ao iniciar o programa, o mesmo irá procurar por um arquivo chamado `.saves` localizado na pasta Home. Caso não tenha, ele executará normalmente e criará um(ou editará caso já exista) ao final de cada etapa do programa, quer seja ela um registro de conta, uma alteração de dado, uma exclusão de conta ou finalização do programa.
+
 ## Autores
 
 - [@reserved1](https://github.com/reserved1/)
