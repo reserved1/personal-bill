@@ -1,5 +1,4 @@
-# personal-bill
-Gerenciador de Contas CHA2
+# Gerenciador de Contas CHA2
 
 O projeto é um modelo teste, criado para estudo de linguagem Swift,
 Se trata de um controle de contas simplificado, onde armazeno algumas informações de contas de casa
