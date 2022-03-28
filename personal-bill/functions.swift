@@ -63,7 +63,7 @@ func entranceMenu() {
         -------------- Aba de Seleção --------------
          1 - Cadastrar Conta  ||  2 - Alterar Conta
          3 - Apagar Conta     ||  4 - Exibir Contas
-           * Outras opções encerrarão o Programa
+           * Outras opções encerrarão o Programa.
         --------------------------------------------
         
         """
@@ -157,7 +157,7 @@ func alterationMenu(_ array: inout Array<Bill>) {
         print(
             """
             ------------------ Aba de Alteração -----------------
-            - Digite o Código de Barra da Conta: ex. 1234567...
+            -> Digite o Código de Barra da Conta: ex. 1234567...
             -----------------------------------------------------
             """
         )
@@ -166,14 +166,14 @@ func alterationMenu(_ array: inout Array<Bill>) {
     } while barCode == nil || barCode == ""
     let tempBill: Bill = barCodeSearch(&array, barCode!) // função de busca por codigo de barra
     if tempBill.barCode == "404" { // Condição de parada para falha de busca
-        print("- O Código de Barra não foi encontrado.")
+        print("-> O Código de Barra não foi encontrado.")
         return
     }
     print(
         """
         
         ------------- Aba de Alteração ------------
-        - Digite qual opção deseja alterar:
+        -> Digite qual opção deseja alterar:
         1 - Código de Barra  ||  2 - Descrição
         3 - Pagamento        ||  4 - Valor
         -------------------------------------------
@@ -187,7 +187,7 @@ func alterationMenu(_ array: inout Array<Bill>) {
     case "1":
         var tempBarCode: String?
         repeat {
-            print("Digite o NOVO Código: ex. 87589275667265")
+            print("-> Digite o NOVO Código: ex. 87589275667265")
             print("",terminator: "-> ")
             tempBarCode = getBarCode()
         } while tempBarCode == nil || tempBarCode == ""
@@ -205,7 +205,7 @@ func alterationMenu(_ array: inout Array<Bill>) {
     case "2":
         var tempDescription: String?
         repeat {
-            print("Digite a NOVA Descrição: ex. Conta de Luz")
+            print("-> Digite a NOVA Descrição: ex. Conta de Luz")
             print("",terminator: "-> ")
             tempDescription = getDescription()
         } while tempDescription == nil || tempDescription == ""
@@ -217,12 +217,12 @@ func alterationMenu(_ array: inout Array<Bill>) {
         } else {
             tempBill.status = true
         }
-        print("Mudança na situação de pagamento alterado.")
+        print("-> Mudança na situação de pagamento.")
         
     case "4":
         var tempValue: Double?
         repeat {
-            print("Digite o NOVO Valor da Conta: ex. 125.90")
+            print("-> Digite o NOVO Valor da Conta: ex. 125.90")
             print("",terminator: "-> ")
             tempValue = getValue()
         } while tempValue == nil
@@ -253,7 +253,7 @@ func deletionMenu(_ array: inout Array<Bill>) {
     print(
         """
         ------------------ Aba de Alteração -----------------
-        - Digite o Código de Barra da Conta: ex. 1234567...
+        -> Digite o Código de Barra da Conta: ex. 1234567...
         -----------------------------------------------------
         """
     )
@@ -261,16 +261,16 @@ func deletionMenu(_ array: inout Array<Bill>) {
     // Var temporário para receber o input.
     guard let tempOpt = readLine()
     else {
-        print("Código pesquisado não poderá ser vazio.")
+        print("-> Código pesquisado não poderá ser vazio.")
         return
     }
     if tempOpt == "" {
-        print("Código de barra não pode estar vazio.")
+        print("-> Código de barra não pode estar vazio.")
         return
     }
     let tempBill: Bill = barCodeSearch(&array, tempOpt) // função de busca por codigo de barra
     if tempBill.barCode == "404" { // Condição de parada para falha de busca
-        print("- O Código de Barra não foi encontrado.")
+        print("-> O Código de Barra não foi encontrado.")
         return
     }
     array = array.filter({object in object.barCode != tempOpt}) // Filtro de exclusão de objeto da lista
@@ -289,7 +289,8 @@ func exibitionMenu(_ array: inout Array<Bill>){
             """
             --------------------- Aba de Exibição ---------------------
              1 - Exibir Todas as Contas || 2 - Exibir Contas não Pagas
-             3 - Exibir Contas Pagas    || 4 - Voltar
+             3 - Exibir Contas Pagas    || 4 - Exibir Total a Pagar
+              * Outras opções retornaram para o Menu de Entrada.
             -----------------------------------------------------------
             """
         )
@@ -338,6 +339,30 @@ func exibitionMenu(_ array: inout Array<Bill>){
                 else {
                     printBeautify(&tempArray)
                 }
+            case "4":
+                var tempValue: Double = 0
+                let tempArray = array.filter({object in object.status != true})
+                if tempArray.isEmpty {
+                    print(
+                    """
+                    
+                    -> Não há contas a pagar.
+                    
+                    """
+                    )
+                } else {
+                    for object in tempArray {
+                        tempValue += object.value
+                    }
+                    print(
+                    """
+                    
+                    -> Valor necessário para todas as contas:
+                    -> R$ \(tempValue)
+                    
+                    """
+                    )
+                }
             default:
                 print(
                 """
@@ -371,7 +396,7 @@ func saveData(_ list: inout Array<Bill>, _ fileUrl: URL) {
         // Encondar para tipo JSON e escrita no Arquivo de Persistencia.
         try encoded.encode(list).write(to: fileUrl)
     } catch {
-        print("Falha ao Salvar Informações.")
+        print("-> Falha ao Salvar Informações.")
     }
 }
 // Função principal do programa.
@@ -388,7 +413,7 @@ func main() {
         entranceMenu() // Chamada do menu inicial.
         // Variável para inicialização do switch/case
         guard let options: String = readLine() else {
-            print("Não Aceitamos valor NIL aqui!!")
+            print("-> Não Aceitamos valor NIL aqui!!")
             return
         }
         switch options {
@@ -419,7 +444,7 @@ func main() {
 // Função para loop de aquisição de valor da conta.
 func getValue() -> Double?{
     guard let value = Double(readLine()!) else {
-        print("Você deve digitar um valor numérico.")
+        print("-> Você deve digitar um valor numérico.")
         return nil
     }
     return value
@@ -429,7 +454,7 @@ func getDescription() -> String?{
     // Var temporário para receber o input.
     guard let description = readLine()
     else {
-        print("A Descrição não pode ser vazia.")
+        print("-> A Descrição não pode ser vazia.")
         return nil
     }
     return description
@@ -438,7 +463,7 @@ func getDescription() -> String?{
 func getBarCode() -> String? {
     guard let barCode = readLine()
     else {
-        print("Código não poderá ser vazio.")
+        print("-> Código não poderá ser vazio.")
         return nil
     }
     return barCode
