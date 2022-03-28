@@ -8,8 +8,10 @@ Para saber se já as paguei ou não.
 
 ## Como Baixar?
 
-Basta clonar o reposítorio e clicar no executável.
-clone: https://github.com/reserved1/personal-bill.git
+Basta clonar o reposítorio e clicar no executável.  
+```
+git clone https://github.com/reserved1/personal-bill.git
+```
 
 ## Utilizando o Programa
 
