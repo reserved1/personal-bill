@@ -1,10 +1,17 @@
+
 # Gerenciador de Contas CHA2
 
 O projeto é um modelo teste, criado para estudo de linguagem Swift,
 Se trata de um controle de contas simplificado, onde armazeno algumas informações de contas de casa
 Para saber se já as paguei ou não.
+# Documentação
 
-## Documentação
+## Como Baixar?
+
+Basta clonar o reposítorio e clicar no executável.
+clone: https://github.com/reserved1/personal-bill.git
+
+## Utilizando o Programa
 
 O programa possui um menu de entrada com 4 opções de interação:
 1 - Cadastrar Conta
@@ -65,9 +72,6 @@ Ao escolher exibir conta, um menu de exibição aparece, listando as opções:
 ** Exibir Contas Pagas: Mostrará na tela todas as contas cadastradas no programa com o estado de Paga.
 
 ** Voltar: Retornará ao menu de entrada.
-
 ## Autores
 
 - [@reserved1](https://github.com/reserved1/)
-
-
