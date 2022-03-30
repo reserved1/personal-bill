@@ -8,24 +8,13 @@
 import Foundation
 
 // Print mais "bonito" para lista de objetos.
-func printBeautify (_ array: inout Array<Bill>) {
+func printBeautify (_ array: Array<Bill>) {
     for object in array {
-        let tempStatus: String
-        tempStatus = object.status ? "Pago" : "Não Pago"
-        print(
-            """
-            =================================
-            |Conta:    \(object.description)
-            |Valor:    \(object.value)
-            |Código:   \(object.barCode)
-            |Situação: \(tempStatus)
-            =================================
-            """
-        )
+        printBeautify(object)
     }
 }
 // Print mais "bonito" para objetos isolados.
-func printBeautify (_ object: inout Bill) {
+func printBeautify (_ object: Bill) {
     let tempStatus: String
     tempStatus = object.status ? "Pago" : "Não Pago"
     print(
@@ -147,7 +136,7 @@ func registrationMenu(_ array: inout Array<Bill>) {
     
     """
     )
-    printBeautify(&tempBill) // Exibir a conta adicionada por último
+    printBeautify(tempBill) // Exibir a conta adicionada por último
     
 }
 // Função para menu de alteração de dados
@@ -309,10 +298,10 @@ func exibitionMenu(_ array: inout Array<Bill>){
                     )
                 }
                 else {
-                    printBeautify(&array)
+                    printBeautify(array)
                 }
             case "2":
-                var tempArray = array.filter({object in object.status == false}) // Filtro de contas não pagas.
+                let tempArray = array.filter({object in object.status == false}) // Filtro de contas não pagas.
                 if tempArray.count == 0 {
                     print(
                     """
@@ -323,10 +312,10 @@ func exibitionMenu(_ array: inout Array<Bill>){
                     )
                 }
                 else {
-                    printBeautify(&tempArray)
+                    printBeautify(tempArray)
                 }
             case "3":
-                var tempArray = array.filter({object in object.status == true}) // Filtro de contas pagas.
+                let tempArray = array.filter({object in object.status == true}) // Filtro de contas pagas.
                 if tempArray.count == 0 {
                     print(
                     """
@@ -337,7 +326,7 @@ func exibitionMenu(_ array: inout Array<Bill>){
                     )
                 }
                 else {
-                    printBeautify(&tempArray)
+                    printBeautify(tempArray)
                 }
             case "4":
                 var tempValue: Double = 0
