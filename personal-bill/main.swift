@@ -6,4 +6,5 @@
 //
 import Foundation
 
-main()
+
+Functions().main()
