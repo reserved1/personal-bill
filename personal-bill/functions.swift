@@ -8,43 +8,49 @@
 import Foundation
 struct Functions{
 
-    // Print mais "bonito" para lista de objetos.
-    func printBeautify (_ array: Array<Bill>) {
-        for object in array {
-            printBeautify(object)
-        }
-    }
-    // Print mais "bonito" para objetos isolados.
-    func printBeautify (_ object: Bill) {
-        let tempStatus: String
-        tempStatus = object.status ? "Pago" : "Não Pago"
-        print(
-            """
-            =================================
-            |Conta:    \(object.description)
-            |Valor:    \(object.value)
-            |Código:   \(object.barCode)
-            |Situação: \(tempStatus)
-            =================================
-            """
-            )
-    }
-    // Função de busca usando o código de barra(barCode)
-    func barCodeSearch(_ array: inout Array<Bill>, _ barCode: String) -> Bill{
-        var tempBill: Bill = Bill(barCode: "404", description: "Sem Informação", status: true, value: 0)
-        if array.count != 0 { // Checagem de lista vazia ou codigo de barra nulo
-            for object in array {
-                if object.barCode == barCode {
-                    tempBill = object
+    // Função principal do programa.
+    func main() {
+        // Lista inicial de Contas.
+        var list: Array<Bill> = []
+        // Constante para transformar o caminho do arquivo para URL.
+        let fileUrl = URL.init(fileURLWithPath: NSHomeDirectory()+"/.saves")
+        // Função para carregar dados dos arquivos na lista.
+        Manager.loadData(&list, fileUrl)
+
+        var state = true
+        while state {
+            entranceMenu() // Chamada do menu inicial.
+            // Variável para inicialização do switch/case
+            guard let options: String = readLine() else {
+                print("-> Não Aceitamos valor NIL aqui!!")
+                return
+            }
+            switch options {
+                case "1":
+                    // Chamada de função para adicionar conta.
+                    registrationMenu(&list)
+                    Manager.saveData(list, fileUrl)
+                case "2":
+                    // Chamada de função para alterar dados de contas.
+                    alterationMenu(&list)
+                    Manager.saveData(list, fileUrl)
+                case "3":
+                    // Chamada de função para deletar um objeto conta.
+                    deletionMenu(&list)
+                    Manager.saveData(list, fileUrl)
+                case "4":
+                    // Chamada de função para exibir dados de contas.
+                    exibitionMenu(list)
+                default:
+                    // Saída do programa.
+                    print("Saída.")
+                    state = false
                     break
-                }
             }
         }
-        else {
-            return tempBill // Retorna objeto com valor de parada sem erro nil
-        }
-        return tempBill // Retorna o objeto que quero da lista
+        Manager.saveData(list, fileUrl) // Função para salvar informação em arquivo.
     }
+    
     // Menu de entrada para o "programa" do terminal
     func entranceMenu() {
         print(
@@ -60,6 +66,7 @@ struct Functions{
         )
         print("",terminator: "-> ")
     }
+    
     // Função para a opção de Cadastrar Conta.
     func registrationMenu(_ array: inout Array<Bill>) {
         // Cadastro feito por ordem: barCode/Description/status/value.
@@ -137,9 +144,9 @@ struct Functions{
         
         """
         )
-        printBeautify(tempBill) // Exibir a conta adicionada por último
-        
+        Printer.printBeautify(tempBill) // Exibir a conta adicionada por último
     }
+    
     // Função para menu de alteração de dados
     func alterationMenu(_ array: inout Array<Bill>) {
         var barCode: String?
@@ -238,6 +245,7 @@ struct Functions{
             """
         )
     }
+    
     // Funçao para menu de apagar dados.
     func deletionMenu(_ array: inout Array<Bill>) {
         print(
@@ -272,8 +280,9 @@ struct Functions{
         """
         )
     }
+    
     // Função para menu de exibição de contas.
-    func exibitionMenu(_ array: inout Array<Bill>){
+    func exibitionMenu(_ array: Array<Bill>){
         while true { // Loop para manter no menu.
             print(
                 """
@@ -299,7 +308,7 @@ struct Functions{
                         )
                     }
                     else {
-                        printBeautify(array)
+                        Printer.printBeautify(array)
                     }
                 case "2":
                     let tempArray = array.filter({object in object.status == false}) // Filtro de contas não pagas.
@@ -313,7 +322,7 @@ struct Functions{
                         )
                     }
                     else {
-                        printBeautify(tempArray)
+                        Printer.printBeautify(tempArray)
                     }
                 case "3":
                     let tempArray = array.filter({object in object.status == true}) // Filtro de contas pagas.
@@ -327,7 +336,7 @@ struct Functions{
                         )
                     }
                     else {
-                        printBeautify(tempArray)
+                        Printer.printBeautify(tempArray)
                     }
                 case "4":
                     var tempValue: Double = 0
@@ -365,72 +374,7 @@ struct Functions{
             }
         }
     }
-    // Função para carregar as informações de contas.
-    func loadData(_ list: inout Array<Bill>, _ fileUrl: URL) {
-        do {
-            // Constante para transformar o conteúdo da URL em tipo Data.
-            let data = try Data(contentsOf: fileUrl)
-            // Decoder do tipo Data para formato da classe Conta(Bill).
-            let decodedData = try JSONDecoder().decode(Array<Bill>.self, from: data)
-            // Atribuição dos valores do arquivo para a lista de contas.
-            list.append(contentsOf: decodedData)
-        } catch {
-            
-        }
-    }
-    // Função para guardar as informações de contas.
-    func saveData(_ list: inout Array<Bill>, _ fileUrl: URL) {
-        // Constante para Encoder da informação.
-        let encoded = JSONEncoder()
-        do {
-            // Encondar para tipo JSON e escrita no Arquivo de Persistencia.
-            try encoded.encode(list).write(to: fileUrl)
-        } catch {
-            print("-> Falha ao Salvar Informações.")
-        }
-    }
-    // Função principal do programa.
-    func main() {
-        // Lista inicial de Contas.
-        var list: Array<Bill> = []
-        // Constante para transformar o caminho do arquivo para URL.
-        let fileUrl = URL.init(fileURLWithPath: NSHomeDirectory()+"/.saves")
-        // Função para carregar dados dos arquivos na lista.
-        loadData(&list, fileUrl)
 
-        var state = true
-        while state {
-            entranceMenu() // Chamada do menu inicial.
-            // Variável para inicialização do switch/case
-            guard let options: String = readLine() else {
-                print("-> Não Aceitamos valor NIL aqui!!")
-                return
-            }
-            switch options {
-                case "1":
-                    // Chamada de função para adicionar conta.
-                    registrationMenu(&list)
-                    saveData(&list, fileUrl)
-                case "2":
-                    // Chamada de função para alterar dados de contas.
-                    alterationMenu(&list)
-                    saveData(&list, fileUrl)
-                case "3":
-                    // Chamada de função para deletar um objeto conta.
-                    deletionMenu(&list)
-                    saveData(&list, fileUrl)
-                case "4":
-                    // Chamada de função para exibir dados de contas.
-                    exibitionMenu(&list)
-                default:
-                    // Saída do programa.
-                    print("Saída.")
-                    state = false
-                    break
-            }
-        }
-        saveData(&list, fileUrl) // Função para salvar informação em arquivo.
-    }
     // Função para loop de aquisição de valor da conta.
     func getValue() -> Double?{
         guard let value = Double(readLine()!) else {
@@ -439,6 +383,7 @@ struct Functions{
         }
         return value
     }
+    
     // Função para loop de descrição de conta.
     func getDescription() -> String?{
         // Var temporário para receber o input.
@@ -449,6 +394,7 @@ struct Functions{
         }
         return description
     }
+    
     // Função para loop de aquisição de código de barra.
     func getBarCode() -> String? {
         guard let barCode = readLine()
@@ -457,5 +403,22 @@ struct Functions{
             return nil
         }
         return barCode
+    }
+    
+    // Função de busca usando o código de barra(barCode)
+    func barCodeSearch(_ array: inout Array<Bill>, _ barCode: String) -> Bill{
+        var tempBill: Bill = Bill(barCode: "404", description: "Sem Informação", status: true, value: 0)
+        if array.count != 0 { // Checagem de lista vazia ou codigo de barra nulo
+            for object in array {
+                if object.barCode == barCode {
+                    tempBill = object
+                    break
+                }
+            }
+        }
+        else {
+            return tempBill // Retorna objeto com valor de parada sem erro nil
+        }
+        return tempBill // Retorna o objeto que quero da lista
     }
 }
