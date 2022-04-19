@@ -9,13 +9,13 @@ import Foundation
 
 struct Manager {
     
-    static func loadData(_ list: inout Array<Bill>, _ fileUrl: URL) {
+    static func loadData(_ fileUrl: URL) -> Array<Bill> {
         do {
             let data = try Data(contentsOf: fileUrl)
             let decodedData = try JSONDecoder().decode(Array<Bill>.self, from: data)
-            list.append(contentsOf: decodedData)
+            return decodedData
         } catch {
-            
+            exit(0)
         }
     }
 

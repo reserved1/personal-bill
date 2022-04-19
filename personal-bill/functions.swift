@@ -9,10 +9,9 @@ import Foundation
 struct Functions{
 
     func main() {
-        var list: Array<Bill> = []
         let fileUrl = URL.init(fileURLWithPath: NSHomeDirectory()+"/.saves")
-        Manager.loadData(&list, fileUrl)
-
+        var list: Array<Bill> = Manager.loadData(fileUrl)
+        
         var state = true
         while state {
             entranceMenu()
@@ -59,20 +58,8 @@ struct Functions{
     func registrationMenu(_ array: inout Array<Bill>) {
         // Cadastro feito por ordem: barCode/Description/status/value.
         // Código de Barra(barCode).
-        var barCode: String?
-        repeat {
-            print(
-                """
-                ---------------- Aba de Registro ---------------
-                 - Digite o Código de Barra da Conta: ex. 13579
-                ------------------------------------------------
-                """
-            )
-            print("",terminator: "-> ")
-            barCode = getBarCode()!
-        } while barCode == nil || barCode == ""
-        // Var temporário para receber o input.
-        var tempBill = barCodeSearch(&array, barCode!)
+        let barCode = getBarCode()
+        var tempBill = barCodeSearch(&array, barCode)
         if tempBill.barCode != "404" { // Verificação para caso de ID repetido.
             print(
             """
@@ -82,26 +69,13 @@ struct Functions{
             return
         }
         // Descrição(desciption).
-        var description: String?
-        repeat {
-            print(
-                """
-                ---------------- Aba de Registro ---------------
-                 - Digite a Descrição da Conta: ex. Conta de Luz
-                ------------------------------------------------
-                """
-            )
-            print("",terminator: "-> ")
-            description = getDescription()!
-        } while description == nil || description == ""
+        let description = getDescription()
         // Condição da Conta<Pago(true) ou não Pago(false)>(status).
         print(
             """
-            -------------------------- Aba de Registro -------------------------
              - Digite 'Y' para conta Já Paga e 'N' para conta Não Paga : ex. Y
              - Deixar vazio constará como não paga.
              - Digitar algo diferente de 'Y' constará como não paga.
-            --------------------------------------------------------------------
             """
         )
         print("",terminator: "-> ")
@@ -110,20 +84,9 @@ struct Functions{
         let status = tempStatus == "y" ? true : false // Checagem para resultado true/false.
         // Valor da Conta(value).
         // Converção de valor para Double
-        var value: Double?
-        repeat {
-            print(
-                """
-                ------------- Aba de Registro ------------
-                 - Digite o Valor da Conta: ex. 99.35
-                ------------------------------------------
-                """
-            )
-            print("",terminator: "-> ")
-            value = getValue()
-        } while value == nil
+        let value = getValue()
         // Atribuindo os valores a um objeto tipo conta e devolvendo para a adicionando a lista de contas.
-        tempBill = Bill(barCode: barCode!, description: description!, status: status, value: value!)
+        tempBill = Bill(barCode: barCode, description: description, status: status, value: value)
         array.append(tempBill)
         print(
         """
@@ -187,13 +150,7 @@ struct Functions{
                 tempBill.barCode = tempBarCode!
             }
         case "2":
-            var tempDescription: String?
-            repeat {
-                print("-> Digite a NOVA Descrição: ex. Conta de Luz")
-                print("",terminator: "-> ")
-                tempDescription = getDescription()
-            } while tempDescription == nil || tempDescription == ""
-            tempBill.description = tempDescription!
+            tempBill.description = getDescription()
             
         case "3":
             if tempBill.status == true { // Inverção de valores de Pago para não Pago ou contrário.
@@ -204,13 +161,7 @@ struct Functions{
             print("-> Mudança na situação de pagamento.")
             
         case "4":
-            var tempValue: Double?
-            repeat {
-                print("-> Digite o NOVO Valor da Conta: ex. 125.90")
-                print("",terminator: "-> ")
-                tempValue = getValue()
-            } while tempValue == nil
-            tempBill.value = tempValue! // Converção para Double.
+            tempBill.value = getValue()
 
         default:
             print(
@@ -360,31 +311,40 @@ struct Functions{
         }
     }
 
-    func getValue() -> Double?{
-        guard let value = Double(readLine()!) else {
-            print("-> Você deve digitar um valor numérico.")
-            return nil
-        }
-        return value
+    func getValue() -> Double {
+        var value: Double?
+        repeat {
+            print("- Digite o Valor da Conta: ex. 99.35")
+            print("",terminator: "-> ")
+            if let tempValue = Double(readLine()!) {
+                value = tempValue
+            }
+        } while value == nil
+        return value!
     }
     
-    func getDescription() -> String?{
-        // Var temporário para receber o input.
-        guard let description = readLine()
-        else {
-            print("-> A Descrição não pode ser vazia.")
-            return nil
-        }
-        return description
+    func getDescription() -> String {
+        var description: String?
+        repeat {
+            print("- Digite a Descrição da Conta: ex. Conta de Luz")
+            print("",terminator: "-> ")
+            if let tempDescription = readLine() {
+                description = tempDescription
+            }
+        } while description == nil || description == ""
+        return description!
     }
     
-    func getBarCode() -> String? {
-        guard let barCode = readLine()
-        else {
-            print("-> Código não poderá ser vazio.")
-            return nil
-        }
-        return barCode
+    func getBarCode() -> String {
+        var barCode: String?
+        repeat {
+            print("- Digite o Código de Barra da Conta: ex. 13579")
+            print("",terminator: "-> ")
+            if let tempBarCode = readLine() {
+                barCode = tempBarCode
+            }
+        } while barCode == nil || barCode == ""
+        return barCode!
     }
     
     func barCodeSearch(_ array: inout Array<Bill>, _ barCode: String) -> Bill{
