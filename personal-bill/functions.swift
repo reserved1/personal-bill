@@ -59,7 +59,7 @@ struct Functions{
         // Cadastro feito por ordem: barCode/Description/status/value.
         // Código de Barra(barCode).
         let barCode = getBarCode()
-        var tempBill = barCodeSearch(&array, barCode)
+        var tempBill = barCodeSearch(array, barCode)
         if tempBill.barCode != "404" { // Verificação para caso de ID repetido.
             print(
             """
@@ -99,19 +99,8 @@ struct Functions{
     }
     
     func alterationMenu(_ array: inout Array<Bill>) {
-        var barCode: String?
-        repeat {
-            print(
-                """
-                ------------------ Aba de Alteração -----------------
-                -> Digite o Código de Barra da Conta: ex. 1234567...
-                -----------------------------------------------------
-                """
-            )
-            print("",terminator: "-> ")
-            barCode = getBarCode()
-        } while barCode == nil || barCode == ""
-        let tempBill: Bill = barCodeSearch(&array, barCode!) // função de busca por codigo de barra
+        let barCode = getBarCode()
+        let tempBill: Bill = barCodeSearch(array, barCode) // função de busca por codigo de barra
         if tempBill.barCode == "404" { // Condição de parada para falha de busca
             print("-> O Código de Barra não foi encontrado.")
             return
@@ -132,14 +121,9 @@ struct Functions{
         
         switch tempOpt {
         case "1":
-            var tempBarCode: String?
-            repeat {
-                print("-> Digite o NOVO Código: ex. 87589275667265")
-                print("",terminator: "-> ")
-                tempBarCode = getBarCode()
-            } while tempBarCode == nil || tempBarCode == ""
-            let tempBill = barCodeSearch(&array, tempBarCode!)
-            if tempBill.barCode != "404" { // Verificação para caso de ID repetido.
+            let tempBarCode = getBarCode()
+            let tempBill1 = barCodeSearch(array, tempBarCode)
+            if tempBill1.barCode != "404" { // Verificação para caso de ID repetido.
                 print(
                 """
                 -> Já existe conta com esse Código de Barra.
@@ -147,7 +131,7 @@ struct Functions{
                 )
                 return
             } else {
-                tempBill.barCode = tempBarCode!
+                tempBill.barCode = tempBarCode
             }
         case "2":
             tempBill.description = getDescription()
@@ -203,7 +187,7 @@ struct Functions{
             print("-> Código de barra não pode estar vazio.")
             return
         }
-        let tempBill: Bill = barCodeSearch(&array, tempOpt) // função de busca por codigo de barra
+        let tempBill: Bill = barCodeSearch(array, tempOpt) // função de busca por codigo de barra
         if tempBill.barCode == "404" { // Condição de parada para falha de busca
             print("-> O Código de Barra não foi encontrado.")
             return
@@ -347,19 +331,12 @@ struct Functions{
         return barCode!
     }
     
-    func barCodeSearch(_ array: inout Array<Bill>, _ barCode: String) -> Bill{
-        var tempBill: Bill = Bill(barCode: "404", description: "Sem Informação", status: true, value: 0)
-        if array.count != 0 { // Checagem de lista vazia ou codigo de barra nulo
-            for object in array {
-                if object.barCode == barCode {
-                    tempBill = object
-                    break
-                }
-            }
+    func barCodeSearch(_ array: Array<Bill>, _ barCode: String) -> Bill {
+        let tempBill = array.first(where: { $0.barCode == barCode })
+        if tempBill != nil {
+            return tempBill!
+        } else {
+            return Bill(barCode: "404", description: "Sem Informação", status: true, value: 0)
         }
-        else {
-            return tempBill // Retorna objeto com valor de parada sem erro nil
-        }
-        return tempBill // Retorna o objeto que quero da lista
     }
 }
