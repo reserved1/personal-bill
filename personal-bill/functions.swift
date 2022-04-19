@@ -8,50 +8,39 @@
 import Foundation
 struct Functions{
 
-    // Função principal do programa.
     func main() {
-        // Lista inicial de Contas.
         var list: Array<Bill> = []
-        // Constante para transformar o caminho do arquivo para URL.
         let fileUrl = URL.init(fileURLWithPath: NSHomeDirectory()+"/.saves")
-        // Função para carregar dados dos arquivos na lista.
         Manager.loadData(&list, fileUrl)
 
         var state = true
         while state {
-            entranceMenu() // Chamada do menu inicial.
-            // Variável para inicialização do switch/case
+            entranceMenu()
             guard let options: String = readLine() else {
-                print("-> Não Aceitamos valor NIL aqui!!")
+                print("-> Nil value not allowed.")
                 return
             }
             switch options {
                 case "1":
-                    // Chamada de função para adicionar conta.
                     registrationMenu(&list)
                     Manager.saveData(list, fileUrl)
                 case "2":
-                    // Chamada de função para alterar dados de contas.
                     alterationMenu(&list)
                     Manager.saveData(list, fileUrl)
                 case "3":
-                    // Chamada de função para deletar um objeto conta.
                     deletionMenu(&list)
                     Manager.saveData(list, fileUrl)
                 case "4":
-                    // Chamada de função para exibir dados de contas.
                     exibitionMenu(list)
                 default:
-                    // Saída do programa.
-                    print("Saída.")
+                    print("Ending.")
                     state = false
                     break
             }
         }
-        Manager.saveData(list, fileUrl) // Função para salvar informação em arquivo.
+        Manager.saveData(list, fileUrl)
     }
     
-    // Menu de entrada para o "programa" do terminal
     func entranceMenu() {
         print(
             """
@@ -67,7 +56,6 @@ struct Functions{
         print("",terminator: "-> ")
     }
     
-    // Função para a opção de Cadastrar Conta.
     func registrationMenu(_ array: inout Array<Bill>) {
         // Cadastro feito por ordem: barCode/Description/status/value.
         // Código de Barra(barCode).
@@ -147,7 +135,6 @@ struct Functions{
         Printer.printBeautify(tempBill) // Exibir a conta adicionada por último
     }
     
-    // Função para menu de alteração de dados
     func alterationMenu(_ array: inout Array<Bill>) {
         var barCode: String?
         repeat {
@@ -246,7 +233,6 @@ struct Functions{
         )
     }
     
-    // Funçao para menu de apagar dados.
     func deletionMenu(_ array: inout Array<Bill>) {
         print(
             """
@@ -281,7 +267,6 @@ struct Functions{
         )
     }
     
-    // Função para menu de exibição de contas.
     func exibitionMenu(_ array: Array<Bill>){
         while true { // Loop para manter no menu.
             print(
@@ -375,7 +360,6 @@ struct Functions{
         }
     }
 
-    // Função para loop de aquisição de valor da conta.
     func getValue() -> Double?{
         guard let value = Double(readLine()!) else {
             print("-> Você deve digitar um valor numérico.")
@@ -384,7 +368,6 @@ struct Functions{
         return value
     }
     
-    // Função para loop de descrição de conta.
     func getDescription() -> String?{
         // Var temporário para receber o input.
         guard let description = readLine()
@@ -395,7 +378,6 @@ struct Functions{
         return description
     }
     
-    // Função para loop de aquisição de código de barra.
     func getBarCode() -> String? {
         guard let barCode = readLine()
         else {
@@ -405,7 +387,6 @@ struct Functions{
         return barCode
     }
     
-    // Função de busca usando o código de barra(barCode)
     func barCodeSearch(_ array: inout Array<Bill>, _ barCode: String) -> Bill{
         var tempBill: Bill = Bill(barCode: "404", description: "Sem Informação", status: true, value: 0)
         if array.count != 0 { // Checagem de lista vazia ou codigo de barra nulo
