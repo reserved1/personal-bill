@@ -10,7 +10,7 @@ struct Functions{
 
     func main() {
         let fileUrl = URL.init(fileURLWithPath: NSHomeDirectory()+"/.saves")
-        var list: Array<Bill> = Manager.loadData(fileUrl)
+        var list: Array<Bill> = Manager.loadData(fileUrl) ?? []
         
         var state = true
         while state {
@@ -95,7 +95,7 @@ struct Functions{
         
         """
         )
-        Printer.printBeautify(tempBill) // Exibir a conta adicionada por último
+        print(tempBill.description) // Exibir a conta adicionada por último
     }
     
     func alterationMenu(_ array: inout Array<Bill>) {
@@ -134,7 +134,7 @@ struct Functions{
                 tempBill.barCode = tempBarCode
             }
         case "2":
-            tempBill.description = getDescription()
+            tempBill.billDescription = getDescription()
             
         case "3":
             if tempBill.status == true { // Inverção de valores de Pago para não Pago ou contrário.
@@ -228,7 +228,9 @@ struct Functions{
                         )
                     }
                     else {
-                        Printer.printBeautify(array)
+                        for object in array {
+                            print(object.description)
+                        }
                     }
                 case "2":
                     let tempArray = array.filter({object in object.status == false}) // Filtro de contas não pagas.
@@ -242,7 +244,9 @@ struct Functions{
                         )
                     }
                     else {
-                        Printer.printBeautify(tempArray)
+                        for object in tempArray {
+                            print(object.description)
+                        }
                     }
                 case "3":
                     let tempArray = array.filter({object in object.status == true}) // Filtro de contas pagas.
@@ -256,7 +260,9 @@ struct Functions{
                         )
                     }
                     else {
-                        Printer.printBeautify(tempArray)
+                        for object in tempArray {
+                            print(object.description)
+                        }
                     }
                 case "4":
                     var tempValue: Double = 0

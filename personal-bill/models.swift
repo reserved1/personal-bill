@@ -7,17 +7,28 @@
 
 import Foundation
 
-class Bill: Codable {
+class Bill: Codable,CustomStringConvertible {
     var barCode: String
-    var description: String
+    var billDescription: String
     var status: Bool
     var value: Double
     
     init(barCode: String, description: String, status: Bool, value: Double) {
         self.barCode = barCode
-        self.description = description
+        self.billDescription = description
         self.status = status
         self.value = value
     }
+    
+    var description: String {
+            """
+            =================================
+            |Conta:    \(billDescription)
+            |Valor:    \(value)
+            |Código:   \(barCode)
+            =================================
+            """
+    }
+    
 }
 

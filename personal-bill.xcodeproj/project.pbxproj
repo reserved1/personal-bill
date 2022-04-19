@@ -10,7 +10,6 @@
 		EEECEF9027EB782F005CAEEA /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEECEF8F27EB782F005CAEEA /* main.swift */; };
 		EEECEF9727EB785D005CAEEA /* functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEECEF9627EB785D005CAEEA /* functions.swift */; };
 		EEECEF9927EB7885005CAEEA /* models.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEECEF9827EB7885005CAEEA /* models.swift */; };
-		EEF608A627F75B3000E15EA3 /* prints.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEF608A527F75B3000E15EA3 /* prints.swift */; };
 		EEF608A827F75C2200E15EA3 /* file-manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEF608A727F75C2200E15EA3 /* file-manager.swift */; };
 /* End PBXBuildFile section */
 
@@ -31,7 +30,6 @@
 		EEECEF8F27EB782F005CAEEA /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		EEECEF9627EB785D005CAEEA /* functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = functions.swift; sourceTree = "<group>"; };
 		EEECEF9827EB7885005CAEEA /* models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = models.swift; sourceTree = "<group>"; };
-		EEF608A527F75B3000E15EA3 /* prints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = prints.swift; sourceTree = "<group>"; };
 		EEF608A727F75C2200E15EA3 /* file-manager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "file-manager.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -68,7 +66,6 @@
 				EEECEF8F27EB782F005CAEEA /* main.swift */,
 				EEECEF9627EB785D005CAEEA /* functions.swift */,
 				EEECEF9827EB7885005CAEEA /* models.swift */,
-				EEF608A527F75B3000E15EA3 /* prints.swift */,
 				EEF608A727F75C2200E15EA3 /* file-manager.swift */,
 			);
 			path = "personal-bill";
@@ -136,7 +133,6 @@
 				EEECEF9927EB7885005CAEEA /* models.swift in Sources */,
 				EEECEF9727EB785D005CAEEA /* functions.swift in Sources */,
 				EEF608A827F75C2200E15EA3 /* file-manager.swift in Sources */,
-				EEF608A627F75B3000E15EA3 /* prints.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
