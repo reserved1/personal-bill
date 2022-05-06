@@ -6,12 +6,11 @@
 //
 
 import Foundation
-struct Functions{
+struct Functions {
 
     func main() {
         let fileUrl = URL.init(fileURLWithPath: NSHomeDirectory()+"/.saves")
-        var list: Array<Bill> = Manager.loadData(fileUrl) ?? []
-        
+        var list: [Bill] = Manager.loadData(fileUrl) ?? []
         var state = true
         while state {
             entranceMenu()
@@ -20,42 +19,37 @@ struct Functions{
                 return
             }
             switch options {
-                case "1":
-                    registrationMenu(&list)
-                    Manager.saveData(list, fileUrl)
-                case "2":
-                    alterationMenu(&list)
-                    Manager.saveData(list, fileUrl)
-                case "3":
-                    deletionMenu(&list)
-                    Manager.saveData(list, fileUrl)
-                case "4":
-                    exibitionMenu(list)
-                default:
-                    print("Ending.")
-                    state = false
-                    break
+            case "1":
+                registrationMenu(&list)
+                Manager.saveData(list, fileUrl)
+            case "2":
+                alterationMenu(&list)
+                Manager.saveData(list, fileUrl)
+            case "3":
+                deletionMenu(&list)
+                Manager.saveData(list, fileUrl)
+            case "4":
+                exibitionMenu(list)
+            default:
+                print("Ending.")
+                state = false
             }
         }
         Manager.saveData(list, fileUrl)
     }
-    
     func entranceMenu() {
         print(
             """
-            
             -------------- Aba de Seleção --------------
              1 - Cadastrar Conta  ||  2 - Alterar Conta
              3 - Apagar Conta     ||  4 - Exibir Contas
                * Outras opções encerrarão o Programa.
             --------------------------------------------
-            
             """
         )
-        print("",terminator: "-> ")
+        print("", terminator: "-> ")
     }
-    
-    func registrationMenu(_ array: inout Array<Bill>) {
+    func registrationMenu(_ array: inout [Bill]) {
         // Cadastro feito por ordem: barCode/Description/status/value.
         // Código de Barra(barCode).
         let barCode = getBarCode()
@@ -78,7 +72,7 @@ struct Functions{
              - Digitar algo diferente de 'Y' constará como não paga.
             """
         )
-        print("",terminator: "-> ")
+        print("", terminator: "-> ")
         // Var temporário para receber o input.
         let tempStatus: String = readLine()?.lowercased() ?? "n"
         let status = tempStatus == "y" ? true : false // Checagem para resultado true/false.
@@ -90,15 +84,12 @@ struct Functions{
         array.append(tempBill)
         print(
         """
-        
         -> Conta Adicionada:
-        
         """
         )
         print(tempBill.description) // Exibir a conta adicionada por último
     }
-    
-    func alterationMenu(_ array: inout Array<Bill>) {
+    func alterationMenu(_ array: inout [Bill]) {
         let barCode = getBarCode()
         let tempBill: Bill = barCodeSearch(array, barCode) // função de busca por codigo de barra
         if tempBill.barCode == "404" { // Condição de parada para falha de busca
@@ -107,18 +98,15 @@ struct Functions{
         }
         print(
             """
-            
             ------------- Aba de Alteração ------------
             -> Digite qual opção deseja alterar:
             1 - Código de Barra  ||  2 - Descrição
             3 - Pagamento        ||  4 - Valor
             -------------------------------------------
-            
             """
         )
-        print("",terminator: "-> ")
+        print("", terminator: "-> ")
         let tempOpt = readLine() ?? "0" // Var temporário para receber o input de opção.
-        
         switch tempOpt {
         case "1":
             let tempBarCode = getBarCode()
@@ -135,7 +123,6 @@ struct Functions{
             }
         case "2":
             tempBill.billDescription = getDescription()
-            
         case "3":
             if tempBill.status == true { // Inverção de valores de Pago para não Pago ou contrário.
                 tempBill.status = false
@@ -143,16 +130,13 @@ struct Functions{
                 tempBill.status = true
             }
             print("-> Mudança na situação de pagamento.")
-            
         case "4":
             tempBill.value = getValue()
 
         default:
             print(
             """
-            
             -> Erro ao escolher a opção.
-            
             """
             )
             print("")
@@ -161,14 +145,11 @@ struct Functions{
         }
         print(
             """
-            
             -> Dados Alterados.
-            
             """
         )
     }
-    
-    func deletionMenu(_ array: inout Array<Bill>) {
+    func deletionMenu(_ array: inout [Bill]) {
         print(
             """
             ------------------ Aba de Alteração -----------------
@@ -176,7 +157,7 @@ struct Functions{
             -----------------------------------------------------
             """
         )
-        print("",terminator: "-> ")
+        print("", terminator: "-> ")
         // Var temporário para receber o input.
         guard let tempOpt = readLine()
         else {
@@ -195,14 +176,11 @@ struct Functions{
         array = array.filter({object in object.barCode != tempOpt}) // Filtro de exclusão de objeto da lista
         print(
         """
-        
         -> Conta Apagada.
-        
         """
         )
     }
-    
-    func exibitionMenu(_ array: Array<Bill>){
+    func exibitionMenu(_ array: [Bill]) {
         while true { // Loop para manter no menu.
             print(
                 """
@@ -213,131 +191,111 @@ struct Functions{
                 -----------------------------------------------------------
                 """
             )
-            print("",terminator: "-> ")
-
+            print("", terminator: "-> ")
             let options: String = readLine() ?? "0" // Variáveis para seleção de opção.
             switch options {
-                case "1":
-                    if array.count == 0 {
-                        print(
-                        """
-                        
-                        -> Não há contas registradas.
-                        
-                        """
-                        )
-                    }
-                    else {
-                        for object in array {
-                            print(object.description)
-                        }
-                    }
-                case "2":
-                    let tempArray = array.filter({object in object.status == false}) // Filtro de contas não pagas.
-                    if tempArray.count == 0 {
-                        print(
-                        """
-                        
-                        -> Não há contas a pagar.
-                        
-                        """
-                        )
-                    }
-                    else {
-                        for object in tempArray {
-                            print(object.description)
-                        }
-                    }
-                case "3":
-                    let tempArray = array.filter({object in object.status == true}) // Filtro de contas pagas.
-                    if tempArray.count == 0 {
-                        print(
-                        """
-                        
-                        -> Não há contas pagas.
-                        
-                        """
-                        )
-                    }
-                    else {
-                        for object in tempArray {
-                            print(object.description)
-                        }
-                    }
-                case "4":
-                    var tempValue: Double = 0
-                    let tempArray = array.filter({object in object.status != true})
-                    if tempArray.isEmpty {
-                        print(
-                        """
-                        
-                        -> Não há contas a pagar.
-                        
-                        """
-                        )
-                    } else {
-                        for object in tempArray {
-                            tempValue += object.value
-                        }
-                        print(
-                        """
-                        
-                        -> Valor necessário para todas as contas:
-                        -> R$ \(tempValue)
-                        
-                        """
-                        )
-                    }
-                default:
+            case "1":
+                if array.count == 0 {
                     print(
                     """
-                    
-                    -> Voltando pro Menu Inicial.
-                    
+                    -> Não há contas registradas.
                     """
                     )
-                    return
+                } else {
+                    for object in array {
+                        print(object.description)
+                    }
+                }
+            case "2":
+                let tempArray = array.filter({object in object.status == false}) // Filtro de contas não pagas.
+                if tempArray.count == 0 {
+                    print(
+                    """
+                    -> Não há contas a pagar.
+                    """
+                    )
+                } else {
+                    for object in tempArray {
+                        print(object.description)
+                    }
+                }
+            case "3":
+                let tempArray = array.filter({object in object.status == true}) // Filtro de contas pagas.
+                if tempArray.count == 0 {
+                    print(
+                    """
+                    -> Não há contas pagas.
+                    """
+                    )
+                } else {
+                    for object in tempArray {
+                        print(object.description)
+                    }
+                }
+            case "4":
+                var tempValue: Double = 0
+                let tempArray = array.filter({object in object.status != true})
+                if tempArray.isEmpty {
+                    print(
+                    """
+                    -> Não há contas a pagar.
+                    """
+                    )
+                } else {
+                    for object in tempArray {
+                        tempValue += object.value
+                    }
+                    print(
+                    """
+                    -> Valor necessário para todas as contas:
+                    -> R$ \(tempValue)
+                    """
+                    )
+                }
+            default:
+                print(
+                """
+                -> Voltando pro Menu Inicial.
+                """
+                )
+                return
             }
         }
     }
-
     func getValue() -> Double {
         var value: Double?
         repeat {
             print("- Digite o Valor da Conta: ex. 99.35")
-            print("",terminator: "-> ")
+            print("", terminator: "-> ")
             if let tempValue = Double(readLine()!) {
                 value = tempValue
             }
         } while value == nil
         return value!
     }
-    
     func getDescription() -> String {
         var description: String?
         repeat {
             print("- Digite a Descrição da Conta: ex. Conta de Luz")
-            print("",terminator: "-> ")
+            print("", terminator: "-> ")
             if let tempDescription = readLine() {
                 description = tempDescription
             }
         } while description == nil || description == ""
         return description!
     }
-    
     func getBarCode() -> String {
         var barCode: String?
         repeat {
             print("- Digite o Código de Barra da Conta: ex. 13579")
-            print("",terminator: "-> ")
+            print("", terminator: "-> ")
             if let tempBarCode = readLine() {
                 barCode = tempBarCode
             }
         } while barCode == nil || barCode == ""
         return barCode!
     }
-    
-    func barCodeSearch(_ array: Array<Bill>, _ barCode: String) -> Bill {
+    func barCodeSearch(_ array: [Bill], _ barCode: String) -> Bill {
         let tempBill = array.first(where: { $0.barCode == barCode })
         if tempBill != nil {
             return tempBill!
